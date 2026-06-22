@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#f8fafc] text-slate-800 antialiased;
+  }
+}
+
+@layer components {
+  .glass-card, .glass-panel {
+    @apply bg-white border border-slate-200 shadow-sm rounded-xl p-6 transition-shadow duration-200;
+  }
+  
+  .glass-card:hover {
+    @apply shadow-md;
+  }
+  
+  .glass-panel {
+    @apply p-4 bg-slate-50 border-slate-100;
+  }
+
+  .btn-primary {
+    @apply bg-primary-800 hover:bg-primary-900 text-white font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-slate-50 text-slate-700 font-medium py-2 px-4 rounded-lg border border-slate-300 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-50 active:scale-95;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-slate-300 text-slate-800 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all;
+  }
+  
+  .table-container {
+    @apply w-full overflow-x-auto rounded-lg border border-slate-200 bg-white;
+  }
+  
+  .data-table {
+    @apply w-full text-left border-collapse;
+  }
+  
+  .data-table th {
+    @apply bg-slate-50 p-3 font-semibold text-slate-700 border-b border-slate-200 text-sm uppercase tracking-wider;
+  }
+  
+  .data-table td {
+    @apply p-3 border-b border-slate-100 text-slate-600;
+  }
+  
+  .data-table tr:last-child td {
+    @apply border-b-0;
+  }
+  
+  .data-table tr:hover td {
+    @apply bg-slate-50/50;
+  }
+}
+
+/* Custom scrollbar for better look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
