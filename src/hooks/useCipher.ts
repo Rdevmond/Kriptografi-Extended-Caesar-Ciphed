@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from 'react';
 import { encrypt, decrypt, type CipherStep, SET_LENGTH } from '../utils/cryptography';
 
@@ -7,6 +8,7 @@ export const useCipher = () => {
   const [key, setKey] = useState<number | ''>(5);
   const [steps, setSteps] = useState<CipherStep[]>([]);
   const [mode, setMode] = useState<'encrypt' | 'decrypt'>('encrypt');
+  const [securityMethod, setSecurityMethod] = useState<'Extended Caesar Cipher' | 'Substitution' | 'Modular Sederhana'>('Extended Caesar Cipher');
 
   const handleEncrypt = useCallback((text: string, k: number) => {
     const { result, steps } = encrypt(text, k);
@@ -51,6 +53,8 @@ export const useCipher = () => {
     execute,
     handleEncrypt,
     handleDecrypt,
-    validateKey
+    validateKey,
+    securityMethod,
+    setSecurityMethod
   };
 };

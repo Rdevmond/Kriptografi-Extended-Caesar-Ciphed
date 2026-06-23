@@ -2,29 +2,26 @@ import React, { useMemo } from 'react';
 import { Card } from '../UI/Card';
 import { Table, Thead, Tbody, Tr, Th, Td } from '../UI/Table';
 import { useCipherContext } from '../../context/CipherContext';
-import { CHARACTER_SET, SET_LENGTH } from '../../utils/cryptography';
-import { ArrowRightLeft, BookOpen, CheckCircle2 } from 'lucide-react';
+import { CHARACTER_SET, N } from '../../utils/cryptography';
+import { ArrowRightLeft, CheckCircle2 } from 'lucide-react';
 
+// Menampilkan tabel pemetaan Domain → Kodomain untuk kunci yang aktif
 export const RelationsModule: React.FC = () => {
   const { key, validateKey } = useCipherContext();
-  
-  const normalizedKey = useMemo(() => {
-    if (typeof key !== 'number') return 0;
-    return validateKey(key);
-  }, [key, validateKey]);
 
-  const mappingData = useMemo(() => {
-    const chars = CHARACTER_SET.split('');
-    return chars.map((char, index) => {
-      const resultIndex = (index + normalizedKey) % SET_LENGTH;
-      return {
-        originalIndex: index,
-        originalChar: char,
-        resultIndex,
-        resultChar: CHARACTER_SET[resultIndex]
-      };
-    });
-  }, [normalizedKey]);
+  const k = useMemo(
+    () => (typeof key === 'number' ? validateKey(key) : 0),
+    [key, validateKey]
+  );
+
+  // Hitung pemetaan E(x) = (x + k) mod N untuk seluruh Σ
+  const mappingData = useMemo(() =>
+    CHARACTER_SET.split('').map((char, x) => {
+      const Ex = (x + k) % N;
+      return { x, char, Ex, resultChar: CHARACTER_SET[Ex] };
+    }),
+    [k]
+  );
 
   return (
     <div className="space-y-6">
@@ -34,35 +31,38 @@ export const RelationsModule: React.FC = () => {
           Relasi &amp; Fungsi Bijektif
         </h2>
         <p className="text-slate-600">
-          Melihat pemetaan karakter dari Domain (Plaintext) ke Kodomain (Ciphertext) menggunakan kunci {normalizedKey}.
+          Pemetaan lengkap Domain (Plaintext) → Kodomain (Ciphertext) dengan kunci k = {k}.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ── Tabel Pemetaan ── */}
         <div className="lg:col-span-2">
           <Card>
-            <h3 className="text-lg font-semibold mb-4 text-slate-800">Tabel Pemetaan (Mapping)</h3>
+            <h3 className="text-lg font-semibold mb-4 text-slate-800">
+              Tabel Pemetaan — E(x) = (x + {k}) mod {N}
+            </h3>
             <div className="max-h-[500px] overflow-y-auto pr-2">
               <Table>
                 <Thead className="sticky top-0 z-10 bg-slate-100">
                   <Tr>
-                    <Th>Indeks Asli (x)</Th>
-                    <Th>Karakter Asli</Th>
-                    <Th>Fungsi</Th>
-                    <Th>Indeks Hasil</Th>
+                    <Th>Indeks x</Th>
+                    <Th>Karakter Asal</Th>
+                    <Th>Operasi</Th>
+                    <Th>Indeks E(x)</Th>
                     <Th>Karakter Hasil</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {mappingData.map((row) => (
-                    <Tr key={row.originalIndex}>
-                      <Td className="font-mono">{row.originalIndex}</Td>
-                      <Td className="font-bold text-primary-700">{row.originalChar}</Td>
-                      <Td className="text-xs text-slate-500">
-                        ({row.originalIndex} + {normalizedKey}) mod {SET_LENGTH}
+                  {mappingData.map(({ x, char, Ex, resultChar }) => (
+                    <Tr key={x}>
+                      <Td className="font-mono">{x}</Td>
+                      <Td className="font-bold text-primary-700">{char}</Td>
+                      <Td className="text-xs text-slate-500 font-mono">
+                        ({x} + {k}) mod {N}
                       </Td>
-                      <Td className="font-mono">{row.resultIndex}</Td>
-                      <Td className="font-bold text-blue-700">{row.resultChar}</Td>
+                      <Td className="font-mono">{Ex}</Td>
+                      <Td className="font-bold text-blue-700">{resultChar}</Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -71,40 +71,40 @@ export const RelationsModule: React.FC = () => {
           </Card>
         </div>
 
-        <div className="space-y-6">
-          <Card variant="panel" className="bg-blue-50 border-blue-200">
-            <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
-              <BookOpen className="w-5 h-5" /> Analisis Fungsi
-            </h3>
-            <p className="text-sm text-slate-700 mb-4 leading-relaxed">
-              Fungsi enkripsi Caesar Cipher <span className="font-mono bg-blue-100 text-blue-800 px-1 rounded">E(x) = (x + k) mod N</span> adalah sebuah <strong>Fungsi Bijektif</strong>.
-            </p>
-            
-            <ul className="space-y-3 text-sm text-slate-700">
-              <li className="flex gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-slate-800">Injektif (One-to-One):</strong>
-                  <p className="text-slate-600 mt-0.5">Setiap karakter plaintext (domain) dipetakan ke karakter ciphertext (kodomain) yang berbeda.</p>
-                </div>
-              </li>
-              <li className="flex gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-slate-800">Surjektif (Onto):</strong>
-                  <p className="text-slate-600 mt-0.5">Setiap karakter dalam kodomain memiliki pasangan di domain. Seluruh {SET_LENGTH} kemungkinan karakter dapat dihasilkan.</p>
-                </div>
-              </li>
-              <li className="flex gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <strong className="text-slate-800">Invertible (Dapat Dibalik):</strong>
-                  <p className="text-slate-600 mt-0.5">Karena bersifat bijektif, fungsi ini memiliki invers yang valid: <span className="font-mono bg-blue-100 text-blue-800 px-1 rounded">D(x) = (x - k + N) mod N</span>.</p>
-                </div>
-              </li>
-            </ul>
-          </Card>
-        </div>
+        {/* ── Analisis Sifat Fungsi ── */}
+        <Card variant="panel" className="bg-blue-50 border-blue-200">
+          <h3 className="font-semibold text-blue-900 mb-3">Analisis Fungsi</h3>
+          <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+            <span className="font-mono bg-blue-100 text-blue-800 px-1 rounded">E(x) = (x + k) mod N</span> adalah fungsi <strong>Bijektif</strong>.
+          </p>
+
+          <ul className="space-y-3 text-sm text-slate-700">
+            <li className="flex gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-slate-800">Injektif (One-to-One):</strong>
+                <p className="text-slate-600 mt-0.5">Setiap karakter plaintext dipetakan ke satu karakter ciphertext yang unik — tidak ada yang bentrok.</p>
+              </div>
+            </li>
+            <li className="flex gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-slate-800">Surjektif (Onto):</strong>
+                <p className="text-slate-600 mt-0.5">Seluruh {N} karakter kodomain dapat dihasilkan — tidak ada yang tidak terpakai.</p>
+              </div>
+            </li>
+            <li className="flex gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-slate-800">Invertible:</strong>
+                <p className="text-slate-600 mt-0.5">
+                  Karena bijektif, ada fungsi invers yang valid:{' '}
+                  <span className="font-mono bg-blue-100 text-blue-800 px-1 rounded">D(x) = (x - k + N) mod N</span>.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </Card>
       </div>
     </div>
   );
