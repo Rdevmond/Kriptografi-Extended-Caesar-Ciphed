@@ -24,7 +24,6 @@ export const enkripsi = (pesan: string, kunci: number): { hasilPesan: string; je
   for (const huruf of pesan) {
     const indeks = HIMPUNAN_KARAKTER.indexOf(huruf);
 
-    // Jika huruf yang diketik tidak ada di himpunan kita, biarkan saja
     if (indeks === -1) {
       hasilPesan += huruf;
       jejakLangkah.push({
