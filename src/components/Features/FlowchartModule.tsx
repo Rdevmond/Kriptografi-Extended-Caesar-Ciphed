@@ -38,16 +38,26 @@ export const FlowchartModule: React.FC = () => {
     }
   }
 
+  // Fungsi pembantu agar tulisan tidak terlalu panjang memecahkan layout node
+  const potongTeks = (teks: string, max: number = 20) => {
+    if (!teks) return 'Kosong';
+    if (teks.length <= max) return teks;
+    return teks.slice(0, max) + '...';
+  };
+
+  const teksInputTampil = potongTeks(mode === 'enkripsi' ? pesanAsli : pesanSandi);
+  const teksOutputTampil = potongTeks(mode === 'enkripsi' ? pesanSandi : pesanAsli);
+
   const dynamicNodes: Node[] = [
     { id: '1', position: { x: 250, y: 0 }, data: { label: 'Mulai' }, type: 'input', style: { background: '#dcfce7', borderColor: '#16a34a', color: '#14532d', fontWeight: 600 } },
-    { id: '2', position: { x: 250, y: 80 }, data: { label: `Input Pesan:\n"${mode === 'enkripsi' ? pesanAsli || 'Kosong' : pesanSandi || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '2', position: { x: 250, y: 80 }, data: { label: `Input Pesan:\n"${teksInputTampil}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '3', position: { x: 250, y: 160 }, data: { label: `Input Kunci (k):\n${k}` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '4', position: { x: 250, y: 240 }, data: { label: `Ambil Karakter Pertama:\n'${hurufContoh || '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '5', position: { x: 250, y: 320 }, data: { label: `Cari Indeks Asli:\n${indeksContoh !== -1 ? indeksContoh : '-'}` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '6', position: { x: 250, y: 400 }, data: { label: `Operasi:\n${indeksContoh !== -1 ? teksOperasi : '-'}` }, style: { backgroundColor: '#dbeafe', borderColor: '#2563eb', color: '#1e3a8a', fontWeight: 600 } },
     { id: '7', position: { x: 250, y: 480 }, data: { label: `Karakter Hasil:\n'${indeksContoh !== -1 ? hurufHasil : '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '8', position: { x: 250, y: 560 }, data: { label: `Ulangi untuk karakter selanjutnya...` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
-    { id: '9', position: { x: 250, y: 640 }, data: { label: `Hasil Akhir:\n"${mode === 'enkripsi' ? pesanSandi || 'Kosong' : pesanAsli || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '9', position: { x: 250, y: 640 }, data: { label: `Hasil Akhir:\n"${teksOutputTampil}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '10', position: { x: 250, y: 720 }, data: { label: 'Selesai' }, type: 'output', style: { background: '#fee2e2', borderColor: '#dc2626', color: '#7f1d1d', fontWeight: 600 } },
   ];
 
