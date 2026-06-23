@@ -11,7 +11,8 @@ export const CharacterSetModule: React.FC = () => {
     uppercase: chars.filter(c => /[A-Z]/.test(c)).length,
     lowercase: chars.filter(c => /[a-z]/.test(c)).length,
     numbers:   chars.filter(c => /[0-9]/.test(c)).length,
-    symbols:   chars.filter(c => /[^A-Za-z0-9]/.test(c)).length,
+    symbols:   chars.filter(c => /[^A-Za-z0-9 ]/.test(c)).length,
+    spaces:    chars.filter(c => c === ' ').length,
   };
 
   return (
@@ -22,13 +23,13 @@ export const CharacterSetModule: React.FC = () => {
           Himpunan Karakter Σ — |Σ| = N = {TOTAL_KARAKTER}
         </h2>
         <p className="text-slate-600">
-          Basis cipher ini menggunakan {TOTAL_KARAKTER} karakter: huruf besar, huruf kecil, angka, dan simbol.
+          Basis cipher ini menggunakan {TOTAL_KARAKTER} karakter: huruf besar, huruf kecil, angka, simbol, dan spasi.
           Tiap karakter dipetakan ke indeks 0–{TOTAL_KARAKTER - 1}.
         </p>
       </div>
 
       {/* Statistik komposisi himpunan */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card variant="panel" className="text-center">
           <div className="text-3xl font-bold text-primary-700">{stats.uppercase}</div>
           <div className="text-sm text-slate-600 mt-1">Huruf Besar (A–Z)</div>
@@ -45,6 +46,10 @@ export const CharacterSetModule: React.FC = () => {
           <div className="text-3xl font-bold text-purple-700">{stats.symbols}</div>
           <div className="text-sm text-slate-600 mt-1">Simbol Spesial</div>
         </Card>
+        <Card variant="panel" className="text-center">
+          <div className="text-3xl font-bold text-orange-600">{stats.spaces}</div>
+          <div className="text-sm text-slate-600 mt-1">Spasi (indeks {TOTAL_KARAKTER - 1})</div>
+        </Card>
       </div>
 
       {/* Tabel indeks — setiap kotak = satu elemen himpunan Σ */}
@@ -57,11 +62,17 @@ export const CharacterSetModule: React.FC = () => {
           {chars.map((char, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 border border-slate-200 hover:border-primary-400 hover:bg-primary-50 transition-colors cursor-default"
+              className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-colors cursor-default ${
+                char === ' '
+                  ? 'bg-orange-50 border-orange-300 hover:border-orange-400'
+                  : 'bg-slate-50 border-slate-200 hover:border-primary-400 hover:bg-primary-50'
+              }`}
             >
               {/* Indeks = nilai x dalam fungsi E(x) dan D(x) */}
               <span className="text-xs text-slate-500 mb-1">{index}</span>
-              <span className="text-lg font-mono font-bold text-slate-800">{char}</span>
+              <span className="text-lg font-mono font-bold text-slate-800">
+                {char === ' ' ? '␣' : char}
+              </span>
             </div>
           ))}
         </div>

@@ -27,7 +27,7 @@ export const MathAnalysisModule: React.FC = () => {
             Himpunan karakter yang digunakan disimbolkan sebagai <InlineMath math="\Sigma" /> (Sigma). Berbeda dengan Caesar Cipher standar yang hanya menggunakan himpunan <InlineMath math="\Sigma = \{A, B, ..., Z\}" /> dengan kardinalitas <InlineMath math="|\Sigma| = 26" />, sistem ini menggunakan himpunan diperluas:
           </p>
           <div className="bg-slate-50 border border-slate-200 p-3 rounded-lg overflow-x-auto text-xs my-1">
-            <BlockMath math="\Sigma = \{A..Z, a..z, 0..9, !, @, \#, \$, \%, \hat{}, \&, *, (, ), -, \_, +, =, ?\}" />
+            <BlockMath math="\Sigma = \{A..Z, a..z, 0..9, !, @, \#, \$, \%, \hat{}, \&, *, (, ), -, \_, +, =, ?, \textvisiblespace\}" />
           </div>
           <p className="text-sm text-slate-600">
             Kardinalitas dari himpunan ini adalah <InlineMath math={`|\\Sigma| = N = ${TOTAL_KARAKTER}`} />. Setiap elemen dalam himpunan dipetakan ke himpunan indeks bilangan bulat <InlineMath math={`Z_N = \\{0, 1, 2, ..., ${TOTAL_KARAKTER - 1}\\}`} />.
@@ -84,7 +84,7 @@ export const MathAnalysisModule: React.FC = () => {
                 <p className="text-xs text-center text-slate-500 mt-1">(4%)</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-600 mb-1">Extended (N=77)</p>
+                <p className="text-xs font-bold text-slate-600 mb-1">Extended (N={TOTAL_KARAKTER})</p>
                 <BlockMath math={`P = \\frac{1}{${TOTAL_KARAKTER - 1}}`} />
                 <p className="text-xs text-center text-slate-500 mt-1">({(1 / (TOTAL_KARAKTER - 1) * 100).toFixed(2)}%)</p>
               </div>
