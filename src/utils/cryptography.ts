@@ -114,7 +114,7 @@ export const hitungFrekuensi = (pesan: string) => {
 export const simulasiBruteForce = (pesanSandi: string) => {
   const daftarPercobaan = [];
   
-  // Coba tebak dari kunci 1 sampai 76
+  // Coba tebak dari kunci 1 sampai TOTAL_KARAKTER - 1
   for (let tebakanKunci = 1; tebakanKunci < TOTAL_KARAKTER; tebakanKunci++) {
     const hasilTebakan = dekripsi(pesanSandi, tebakanKunci).hasilPesan;
     

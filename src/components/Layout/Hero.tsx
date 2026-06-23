@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, Code, BookOpen } from 'lucide-react';
+import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
 export const Hero: React.FC = () => {
   return (
@@ -22,7 +23,7 @@ export const Hero: React.FC = () => {
         
         <p className="text-lg md:text-xl text-slate-600 max-w-3xl mb-10 leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
           Proyek interaktif berbasis web untuk mendemonstrasikan konsep kriptografi dasar.
-          Menggunakan himpunan basis 77 karakter untuk meningkatkan keamanan dan kompleksitas.
+          Menggunakan himpunan basis {TOTAL_KARAKTER} karakter untuk meningkatkan keamanan dan kompleksitas.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full animate-slide-up" style={{ animationDelay: '0.2s' }}>
@@ -31,7 +32,7 @@ export const Hero: React.FC = () => {
               <ShieldCheck className="text-primary-700 w-6 h-6" />
             </div>
             <h3 className="font-bold text-slate-800 text-lg mb-2">Keamanan Data</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">Implementasi algoritma E(x)=(x+k) mod 77 untuk mengamankan plaintext menjadi ciphertext.</p>
+            <p className="text-sm text-slate-600 leading-relaxed">Implementasi algoritma E(x)=(x+k) mod {TOTAL_KARAKTER} untuk mengamankan plaintext menjadi ciphertext.</p>
           </div>
           
           <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-6 text-left hover:shadow-md transition-shadow">

@@ -8,6 +8,7 @@ import { CalculationModule } from './components/Features/CalculationModule';
 import { BruteForceModule } from './components/Features/BruteForceModule';
 import { FlowchartModule } from './components/Features/FlowchartModule';
 import { FinalReportModule } from './components/Features/FinalReportModule';
+import { TOTAL_KARAKTER } from './utils/cryptography';
 import { Lock } from 'lucide-react';
 
 function App() {
@@ -83,7 +84,7 @@ function App() {
         </main>
         
         <footer className="bg-white border-t border-slate-200 py-8 text-center text-slate-500 mt-12">
-          <p>Tugas Kriptografi & Matematika Diskrit - Extended Caesar Cipher 77 Karakter</p>
+          <p>Tugas Kriptografi & Matematika Diskrit - Extended Caesar Cipher {TOTAL_KARAKTER} Karakter</p>
         </footer>
       </div>
     </CipherProvider>

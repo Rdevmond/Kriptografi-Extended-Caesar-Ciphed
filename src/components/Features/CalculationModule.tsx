@@ -50,7 +50,7 @@ export const CalculationModule: React.FC = () => {
                       {langkah.hurufAsli === ' ' ? '(spasi)' : langkah.hurufAsli}
                     </Td>
                     <Td>{langkah.indeksAsli !== -1 ? langkah.indeksAsli : '–'}</Td>
-                    {/* Menampilkan operasi, misal: "(5 + 3) mod 77 = 8" */}
+                    {/* Menampilkan operasi, misal: "(5 + 3) mod N = 8" */}
                     <Td className="font-mono text-xs text-slate-600">{langkah.rumusOperasi}</Td>
                     <Td>{langkah.indeksHasil !== -1 ? langkah.indeksHasil : '–'}</Td>
                     <Td className="font-bold text-primary-700">

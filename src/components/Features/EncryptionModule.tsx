@@ -37,7 +37,7 @@ export const EncryptionModule: React.FC = () => {
       setKunci('');
       return;
     }
-    // Batasi input antara 1 sampai TOTAL_KARAKTER - 1 (76)
+    // Batasi input antara 1 sampai TOTAL_KARAKTER - 1
     if (val < 1) val = 1;
     if (val >= TOTAL_KARAKTER) val = TOTAL_KARAKTER - 1;
     setKunci(val);

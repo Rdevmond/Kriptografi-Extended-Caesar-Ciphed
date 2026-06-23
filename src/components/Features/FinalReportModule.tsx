@@ -23,7 +23,7 @@ export const FinalReportModule: React.FC = () => {
             <li><strong>Metode Pengamanan:</strong> {metodePengamanan}</li>
             <li><strong>Kunci Enkripsi (Asli):</strong> {kunci !== '' ? kunci : 'Belum diatur'}</li>
             <li><strong>Kunci Enkripsi (Normalisasi):</strong> {kunciNormal}</li>
-            <li><strong>Himpunan Karakter:</strong> 77 Karakter (N = {TOTAL_KARAKTER})</li>
+            <li><strong>Himpunan Karakter:</strong> {TOTAL_KARAKTER} Karakter (N = {TOTAL_KARAKTER})</li>
           </ul>
         </div>
 
