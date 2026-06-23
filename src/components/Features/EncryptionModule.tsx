@@ -4,51 +4,51 @@ import { Button } from '../UI/Button';
 import { Input } from '../UI/Input';
 import { useCipherContext } from '../../context/CipherContext';
 import { Copy, RefreshCw, Trash2, ArrowRight } from 'lucide-react';
-import { N } from '../../utils/cryptography';
+import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
 export const EncryptionModule: React.FC = () => {
   const {
-    plaintext, setPlaintext,
-    ciphertext, setCiphertext,
-    key, setKey,
-    execute,
+    pesanAsli, setPesanAsli,
+    pesanSandi, setPesanSandi,
+    kunci, setKunci,
+    jalankanProses,
     mode, setMode,
-    validateKey,
-    securityMethod, setSecurityMethod
+    validasiKunci,
+    metodePengamanan, setMetodePengamanan
   } = useCipherContext();
 
   const [copied, setCopied] = useState(false);
 
   // Salin hasil ke clipboard
   const handleCopy = () => {
-    navigator.clipboard.writeText(mode === 'encrypt' ? ciphertext : plaintext);
+    navigator.clipboard.writeText(mode === 'enkripsi' ? pesanSandi : pesanAsli);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleClear = () => {
-    setPlaintext('');
-    setKey('');
+    setPesanAsli('');
+    setKunci('');
   };
 
   const handleKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = parseInt(e.target.value);
     if (isNaN(val)) {
-      setKey('');
+      setKunci('');
       return;
     }
-    // Batasi input antara 1 sampai N - 1 (76)
+    // Batasi input antara 1 sampai TOTAL_KARAKTER - 1 (76)
     if (val < 1) val = 1;
-    if (val >= N) val = N - 1;
-    setKey(val);
+    if (val >= TOTAL_KARAKTER) val = TOTAL_KARAKTER - 1;
+    setKunci(val);
   };
 
-  const normalizedKey = typeof key === 'number' ? validateKey(key) : '';
+  const kunciNormal = typeof kunci === 'number' ? validasiKunci(kunci) : '';
 
   // Rumus yang ditampilkan berubah sesuai mode aktif
-  const formula = mode === 'encrypt'
-    ? `E(x) = (x + ${normalizedKey !== '' ? normalizedKey : 'k'}) mod ${N}`
-    : `D(x) = (x - ${normalizedKey !== '' ? normalizedKey : 'k'} + ${N}) mod ${N}`;
+  const formula = mode === 'enkripsi'
+    ? `E(x) = (x + ${kunciNormal !== '' ? kunciNormal : 'k'}) mod ${TOTAL_KARAKTER}`
+    : `D(x) = (x - ${kunciNormal !== '' ? kunciNormal : 'k'} + ${TOTAL_KARAKTER}) mod ${TOTAL_KARAKTER}`;
 
   return (
     <div className="space-y-6">
@@ -65,8 +65,8 @@ export const EncryptionModule: React.FC = () => {
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-slate-800">Input</h3>
             <div className="flex items-center gap-2">
-              <Button variant={mode === 'encrypt' ? 'primary' : 'secondary'} size="sm" onClick={() => setMode('encrypt')}>Enkripsi</Button>
-              <Button variant={mode === 'decrypt' ? 'primary' : 'secondary'} size="sm" onClick={() => setMode('decrypt')}>Dekripsi</Button>
+              <Button variant={mode === 'enkripsi' ? 'primary' : 'secondary'} size="sm" onClick={() => setMode('enkripsi')}>Enkripsi</Button>
+              <Button variant={mode === 'dekripsi' ? 'primary' : 'secondary'} size="sm" onClick={() => setMode('dekripsi')}>Dekripsi</Button>
             </div>
           </div>
 
@@ -74,8 +74,8 @@ export const EncryptionModule: React.FC = () => {
             <label className="text-sm font-semibold text-slate-700 ml-1">Metode Pengamanan</label>
             <select
               className="input-field"
-              value={securityMethod}
-              onChange={(e) => setSecurityMethod(e.target.value as any)}
+              value={metodePengamanan}
+              onChange={(e) => setMetodePengamanan(e.target.value as any)}
             >
               <option value="Extended Caesar Cipher">Extended Caesar Cipher</option>
               <option value="Substitution" disabled>Substitution (Segera Hadir)</option>
@@ -85,31 +85,31 @@ export const EncryptionModule: React.FC = () => {
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-slate-700 ml-1">
-              {mode === 'encrypt' ? 'Plaintext' : 'Ciphertext'}
+              {mode === 'enkripsi' ? 'Pesan Asli (Plaintext)' : 'Pesan Sandi (Ciphertext)'}
             </label>
             <textarea
               className="input-field min-h-[150px] resize-y"
-              value={mode === 'encrypt' ? plaintext : ciphertext}
-              onChange={(e) => mode === 'encrypt' ? setPlaintext(e.target.value) : setCiphertext(e.target.value)}
-              placeholder={`Masukkan ${mode === 'encrypt' ? 'pesan asli' : 'pesan terenkripsi'} di sini...`}
+              value={mode === 'enkripsi' ? pesanAsli : pesanSandi}
+              onChange={(e) => mode === 'enkripsi' ? setPesanAsli(e.target.value) : setPesanSandi(e.target.value)}
+              placeholder={`Masukkan ${mode === 'enkripsi' ? 'pesan asli' : 'pesan terenkripsi'} di sini...`}
             />
           </div>
 
           <div className="w-1/2">
             <Input
-              label={`Kunci k (1–${N - 1})`}
+              label={`Kunci k (1–${TOTAL_KARAKTER - 1})`}
               type="number"
               min={1}
-              max={N - 1}
-              value={key}
+              max={TOTAL_KARAKTER - 1}
+              value={kunci}
               onChange={handleKeyChange}
               placeholder="Misal: 5"
             />
           </div>
 
           <div className="flex gap-3">
-            <Button className="flex-1" leftIcon={<RefreshCw className="w-4 h-4" />} onClick={execute} disabled={!key}>
-              {mode === 'encrypt' ? 'Enkripsi' : 'Dekripsi'}
+            <Button className="flex-1" leftIcon={<RefreshCw className="w-4 h-4" />} onClick={jalankanProses} disabled={!kunci}>
+              {mode === 'enkripsi' ? 'Enkripsi' : 'Dekripsi'}
             </Button>
             <Button variant="danger" leftIcon={<Trash2 className="w-4 h-4" />} onClick={handleClear}>Clear</Button>
           </div>
@@ -126,10 +126,10 @@ export const EncryptionModule: React.FC = () => {
 
           <div className="flex flex-col gap-2 flex-1">
             <label className="text-sm font-semibold text-slate-700 ml-1">
-              {mode === 'encrypt' ? 'Ciphertext' : 'Plaintext'}
+              {mode === 'enkripsi' ? 'Pesan Sandi (Ciphertext)' : 'Pesan Asli (Plaintext)'}
             </label>
             <div className="input-field min-h-[150px] flex-1 bg-slate-50 overflow-auto whitespace-pre-wrap break-words text-slate-800">
-              {mode === 'encrypt' ? ciphertext : plaintext}
+              {mode === 'enkripsi' ? pesanSandi : pesanAsli}
             </div>
           </div>
         </Card>

@@ -2,12 +2,12 @@ import React from 'react';
 import { Card } from '../UI/Card';
 import { useCipherContext } from '../../context/CipherContext';
 import { FileText, CheckCircle } from 'lucide-react';
-import { N } from '../../utils/cryptography';
+import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
 export const FinalReportModule: React.FC = () => {
-  const { plaintext, ciphertext, key, securityMethod, validateKey } = useCipherContext();
+  const { pesanAsli, pesanSandi, kunci, metodePengamanan, validasiKunci } = useCipherContext();
 
-  const normalizedKey = typeof key === 'number' ? validateKey(key) : 'Belum diatur';
+  const kunciNormal = typeof kunci === 'number' ? validasiKunci(kunci) : 'Belum diatur';
 
   return (
     <Card className="flex flex-col gap-4">
@@ -20,10 +20,10 @@ export const FinalReportModule: React.FC = () => {
         <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
           <h3 className="font-semibold text-slate-800 mb-2 border-b pb-2">Ringkasan Konfigurasi</h3>
           <ul className="list-disc pl-5 space-y-1 text-slate-700">
-            <li><strong>Metode Pengamanan:</strong> {securityMethod}</li>
-            <li><strong>Kunci Enkripsi (Asli):</strong> {key !== '' ? key : 'Belum diatur'}</li>
-            <li><strong>Kunci Enkripsi (Normalisasi):</strong> {normalizedKey}</li>
-            <li><strong>Himpunan Karakter:</strong> 77 Karakter (N = {N})</li>
+            <li><strong>Metode Pengamanan:</strong> {metodePengamanan}</li>
+            <li><strong>Kunci Enkripsi (Asli):</strong> {kunci !== '' ? kunci : 'Belum diatur'}</li>
+            <li><strong>Kunci Enkripsi (Normalisasi):</strong> {kunciNormal}</li>
+            <li><strong>Himpunan Karakter:</strong> 77 Karakter (N = {TOTAL_KARAKTER})</li>
           </ul>
         </div>
 
@@ -34,18 +34,18 @@ export const FinalReportModule: React.FC = () => {
             <div>
               <p className="text-sm font-semibold text-slate-600 mb-1">Pesan Asli:</p>
               <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words">
-                {plaintext || '-'}
+                {pesanAsli || '-'}
               </div>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-600 mb-1">Pesan Sandi:</p>
               <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words">
-                {ciphertext || '-'}
+                {pesanSandi || '-'}
               </div>
             </div>
           </div>
           
-          {plaintext && ciphertext && (
+          {pesanAsli && pesanSandi && (
             <div className="mt-4 flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-md border border-green-200">
               <CheckCircle className="w-5 h-5" />
               <span>Proses enkripsi dan dekripsi berhasil dilakukan tanpa kehilangan data (Lossless).</span>

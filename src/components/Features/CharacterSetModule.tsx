@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card } from '../UI/Card';
-import { CHARACTER_SET, N } from '../../utils/cryptography';
+import { HIMPUNAN_KARAKTER, TOTAL_KARAKTER } from '../../utils/cryptography';
 import { Type, Info } from 'lucide-react';
 
 // Menampilkan himpunan Σ lengkap beserta indeks tiap karakter
 export const CharacterSetModule: React.FC = () => {
-  const chars = CHARACTER_SET.split('');
+  const chars = HIMPUNAN_KARAKTER.split('');
 
   const stats = {
     uppercase: chars.filter(c => /[A-Z]/.test(c)).length,
@@ -19,11 +19,11 @@ export const CharacterSetModule: React.FC = () => {
       <div>
         <h2 className="text-2xl font-bold mb-2 text-slate-900 flex items-center gap-2">
           <Type className="w-6 h-6 text-primary-600" />
-          Himpunan Karakter Σ — |Σ| = N = {N}
+          Himpunan Karakter Σ — |Σ| = N = {TOTAL_KARAKTER}
         </h2>
         <p className="text-slate-600">
-          Basis cipher ini menggunakan {N} karakter: huruf besar, huruf kecil, angka, dan simbol.
-          Tiap karakter dipetakan ke indeks 0–{N - 1}.
+          Basis cipher ini menggunakan {TOTAL_KARAKTER} karakter: huruf besar, huruf kecil, angka, dan simbol.
+          Tiap karakter dipetakan ke indeks 0–{TOTAL_KARAKTER - 1}.
         </p>
       </div>
 

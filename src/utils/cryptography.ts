@@ -1,133 +1,127 @@
-// ============================================================
-// HIMPUNAN KARAKTER — 77 elemen (basis cipher)
-// Σ = {A..Z, a..z, 0..9, simbol}  →  |Σ| = N = 77
-// ============================================================
-export const CHARACTER_SET =
+export const HIMPUNAN_KARAKTER =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=?";
 
-export const N = 77; // kardinalitas himpunan  |Σ|
-
-// Alias untuk kompatibilitas komponen lama
-export const SET_LENGTH = N;
-
-// ============================================================
-// TIPE DATA — satu langkah perhitungan per karakter
-// ============================================================
-export interface CipherStep {
-  originalChar: string;
-  originalIndex: number; // x   : indeks dalam Σ  (-1 jika tidak ada)
-  operation: string;     // teks operasi, misal "(5 + 3) mod 77"
-  resultIndex: number;   // E(x): indeks hasil
-  resultChar: string;    // karakter hasil
+export const TOTAL_KARAKTER = 77;
+// Tipe data untuk menyimpan jejak atau langkah perhitungan setiap huruf
+export interface LangkahSandi {
+  hurufAsli: string;
+  indeksAsli: number;
+  rumusOperasi: string;
+  indeksHasil: number;
+  hurufHasil: string;
 }
 
-// ============================================================
-// NORMALISASI KUNCI
-// Menjamin k ∈ {0, 1, ..., N-1}
-// ============================================================
-export const normalizeKey = (key: number): number =>
-  ((key % N) + N) % N;
+export const normalisasiKunci = (kunci: number): number => {
+  return ((kunci % TOTAL_KARAKTER) + TOTAL_KARAKTER) % TOTAL_KARAKTER;
+};
 
-// ============================================================
-// FUNGSI ENKRIPSI
-// E(x) = (x + k) mod N
-// ============================================================
-export const encrypt = (
-  text: string,
-  key: number
-): { result: string; steps: CipherStep[] } => {
-  const k = normalizeKey(key);
-  const steps: CipherStep[] = [];
-  let result = "";
+export const enkripsi = (pesan: string, kunci: number): { hasilPesan: string; jejakLangkah: LangkahSandi[] } => {
+  const kunciNormal = normalisasiKunci(kunci);
+  const jejakLangkah: LangkahSandi[] = [];
+  let hasilPesan = "";
 
-  for (const char of text) {
-    const x = CHARACTER_SET.indexOf(char);
+  for (const huruf of pesan) {
+    const indeks = HIMPUNAN_KARAKTER.indexOf(huruf);
 
-    // Karakter di luar himpunan Σ → lewati tanpa diubah
-    if (x === -1) {
-      result += char;
-      steps.push({ originalChar: char, originalIndex: -1, operation: "Tidak dalam Σ", resultIndex: -1, resultChar: char });
+    // Jika huruf yang diketik tidak ada di himpunan kita, biarkan saja
+    if (indeks === -1) {
+      hasilPesan += huruf;
+      jejakLangkah.push({
+        hurufAsli: huruf,
+        indeksAsli: -1,
+        rumusOperasi: "Karakter tidak dikenali",
+        indeksHasil: -1,
+        hurufHasil: huruf
+      });
       continue;
     }
 
-    // INTI MATEMATIKA: E(x) = (x + k) mod N
-    const Ex = (x + k) % N;
-    result += CHARACTER_SET[Ex];
+    const indeksBaru = (indeks + kunciNormal) % TOTAL_KARAKTER;
+    const hurufBaru = HIMPUNAN_KARAKTER[indeksBaru];
+    
+    hasilPesan += hurufBaru;
 
-    steps.push({
-      originalChar: char,
-      originalIndex: x,
-      operation: `(${x} + ${k}) mod ${N} = ${Ex}`,
-      resultIndex: Ex,
-      resultChar: CHARACTER_SET[Ex],
+    jejakLangkah.push({
+      hurufAsli: huruf,
+      indeksAsli: indeks,
+      rumusOperasi: `(${indeks} + ${kunciNormal}) mod ${TOTAL_KARAKTER} = ${indeksBaru}`,
+      indeksHasil: indeksBaru,
+      hurufHasil: hurufBaru,
     });
   }
 
-  return { result, steps };
+  return { hasilPesan, jejakLangkah };
 };
 
-// ============================================================
-// FUNGSI DEKRIPSI
-// D(x) = (x - k + N) mod N
-// +N sebelum mod untuk menghindari nilai negatif
-// ============================================================
-export const decrypt = (
-  text: string,
-  key: number
-): { result: string; steps: CipherStep[] } => {
-  const k = normalizeKey(key);
-  const steps: CipherStep[] = [];
-  let result = "";
+export const dekripsi = (pesanSandi: string, kunci: number): { hasilPesan: string; jejakLangkah: LangkahSandi[] } => {
+  const kunciNormal = normalisasiKunci(kunci);
+  const jejakLangkah: LangkahSandi[] = [];
+  let hasilPesan = "";
 
-  for (const char of text) {
-    const x = CHARACTER_SET.indexOf(char);
+  for (const huruf of pesanSandi) {
+    const indeks = HIMPUNAN_KARAKTER.indexOf(huruf);
 
-    if (x === -1) {
-      result += char;
-      steps.push({ originalChar: char, originalIndex: -1, operation: "Tidak dalam Σ", resultIndex: -1, resultChar: char });
+    if (indeks === -1) {
+      hasilPesan += huruf;
+      jejakLangkah.push({
+        hurufAsli: huruf,
+        indeksAsli: -1,
+        rumusOperasi: "Karakter tidak dikenali",
+        indeksHasil: -1,
+        hurufHasil: huruf
+      });
       continue;
     }
 
-    // INTI MATEMATIKA: D(x) = (x - k + N) mod N
-    const Dx = (x - k + N) % N;
-    result += CHARACTER_SET[Dx];
+    const indeksBaru = (indeks - kunciNormal + TOTAL_KARAKTER) % TOTAL_KARAKTER;
+    const hurufBaru = HIMPUNAN_KARAKTER[indeksBaru];
+    
+    hasilPesan += hurufBaru;
 
-    steps.push({
-      originalChar: char,
-      originalIndex: x,
-      operation: `(${x} - ${k} + ${N}) mod ${N} = ${Dx}`,
-      resultIndex: Dx,
-      resultChar: CHARACTER_SET[Dx],
+    jejakLangkah.push({
+      hurufAsli: huruf,
+      indeksAsli: indeks,
+      rumusOperasi: `(${indeks} - ${kunciNormal} + ${TOTAL_KARAKTER}) mod ${TOTAL_KARAKTER} = ${indeksBaru}`,
+      indeksHasil: indeksBaru,
+      hurufHasil: hurufBaru,
     });
   }
 
-  return { result, steps };
+  return { hasilPesan, jejakLangkah };
 };
 
-// ============================================================
-// ANALISIS FREKUENSI
-// Menghitung frekuensi tiap karakter Σ pada teks
-// ============================================================
-export const calculateFrequencies = (text: string) => {
-  const freqs: Record<string, number> = {};
-  CHARACTER_SET.split("").forEach((c) => (freqs[c] = 0));
+export const hitungFrekuensi = (pesan: string) => {
+  const daftarFrekuensi: Record<string, number> = {};
+  
+  // Siapkan daftarnya mulai dari 0
+  HIMPUNAN_KARAKTER.split("").forEach((huruf) => (daftarFrekuensi[huruf] = 0));
 
-  for (const char of text) {
-    if (freqs[char] !== undefined) freqs[char]++;
+  for (const huruf of pesan) {
+    if (daftarFrekuensi[huruf] !== undefined) {
+      daftarFrekuensi[huruf]++;
+    }
   }
 
-  return Object.entries(freqs)
-    .filter(([, count]) => count > 0)
+  // Urutkan dari yang paling sering muncul
+  return Object.entries(daftarFrekuensi)
+    .filter(([, jumlahMuncul]) => jumlahMuncul > 0)
     .sort((a, b) => b[1] - a[1])
-    .map(([char, count]) => ({ char, count }));
+    .map(([huruf, jumlahMuncul]) => ({ huruf, jumlahMuncul }));
 };
 
-// ============================================================
-// BRUTE FORCE — mencoba semua k ∈ {1, ..., N-1}
-// Kompleksitas: O(N × |teks|)
-// ============================================================
-export const generateBruteForce = (ciphertext: string) =>
-  Array.from({ length: N - 1 }, (_, i) => ({
-    key: i + 1,
-    text: decrypt(ciphertext, i + 1).result,
-  }));
+// Simulasi mencoba-coba semua kunci (Brute Force) untuk membongkar sandi
+export const simulasiBruteForce = (pesanSandi: string) => {
+  const daftarPercobaan = [];
+  
+  // Coba tebak dari kunci 1 sampai 76
+  for (let tebakanKunci = 1; tebakanKunci < TOTAL_KARAKTER; tebakanKunci++) {
+    const hasilTebakan = dekripsi(pesanSandi, tebakanKunci).hasilPesan;
+    
+    daftarPercobaan.push({
+      kunciTebakan: tebakanKunci,
+      hasilTeks: hasilTebakan,
+    });
+  }
+  
+  return daftarPercobaan;
+};

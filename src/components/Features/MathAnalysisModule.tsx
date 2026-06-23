@@ -3,7 +3,7 @@ import { Card } from '../UI/Card';
 import { Sigma, BookOpen } from 'lucide-react';
 import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
-import { SET_LENGTH } from '../../utils/cryptography';
+import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
 export const MathAnalysisModule: React.FC = () => {
   return (
@@ -30,7 +30,7 @@ export const MathAnalysisModule: React.FC = () => {
             <BlockMath math="\Sigma = \{A..Z, a..z, 0..9, !, @, \#, \$, \%, \hat{}, \&, *, (, ), -, \_, +, =, ?\}" />
           </div>
           <p className="text-sm text-slate-600">
-            Kardinalitas dari himpunan ini adalah <InlineMath math={`|\\Sigma| = N = ${SET_LENGTH}`} />. Setiap elemen dalam himpunan dipetakan ke himpunan indeks bilangan bulat <InlineMath math={`Z_N = \\{0, 1, 2, ..., ${SET_LENGTH - 1}\\}`} />.
+            Kardinalitas dari himpunan ini adalah <InlineMath math={`|\\Sigma| = N = ${TOTAL_KARAKTER}`} />. Setiap elemen dalam himpunan dipetakan ke himpunan indeks bilangan bulat <InlineMath math={`Z_N = \\{0, 1, 2, ..., ${TOTAL_KARAKTER - 1}\\}`} />.
           </p>
         </Card>
 
@@ -85,13 +85,13 @@ export const MathAnalysisModule: React.FC = () => {
               </div>
               <div>
                 <p className="text-xs font-bold text-slate-600 mb-1">Extended (N=77)</p>
-                <BlockMath math={`P = \\frac{1}{${SET_LENGTH - 1}}`} />
-                <p className="text-xs text-center text-slate-500 mt-1">({(1 / (SET_LENGTH - 1) * 100).toFixed(2)}%)</p>
+                <BlockMath math={`P = \\frac{1}{${TOTAL_KARAKTER - 1}}`} />
+                <p className="text-xs text-center text-slate-500 mt-1">({(1 / (TOTAL_KARAKTER - 1) * 100).toFixed(2)}%)</p>
               </div>
             </div>
           </div>
           <p className="text-sm text-slate-600">
-            Walaupun probabilitas ditebak secara acak berkurang secara signifikan, ruang kunci sebanyak {SET_LENGTH - 1} masih sangat kecil dan mudah dipecahkan menggunakan komputasi modern.
+            Walaupun probabilitas ditebak secara acak berkurang secara signifikan, ruang kunci sebanyak {TOTAL_KARAKTER - 1} masih sangat kecil dan mudah dipecahkan menggunakan komputasi modern.
           </p>
         </Card>
       </div>

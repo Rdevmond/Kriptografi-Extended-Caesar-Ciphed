@@ -12,42 +12,42 @@ import { Card } from '../UI/Card';
 import { GitBranch } from 'lucide-react';
 
 import { useCipherContext } from '../../context/CipherContext';
-import { N, CHARACTER_SET } from '../../utils/cryptography';
+import { TOTAL_KARAKTER, HIMPUNAN_KARAKTER } from '../../utils/cryptography';
 
 export const FlowchartModule: React.FC = () => {
-  const { plaintext, ciphertext, key, mode, validateKey } = useCipherContext();
+  const { pesanAsli, pesanSandi, kunci, mode, validasiKunci } = useCipherContext();
   
-  const k = typeof key === 'number' ? validateKey(key) : 0;
+  const k = typeof kunci === 'number' ? validasiKunci(kunci) : 0;
   
   // Ambil karakter pertama sebagai contoh untuk flowchart
-  const sampleChar = mode === 'encrypt' ? plaintext[0] : ciphertext[0];
-  const sampleIndex = sampleChar ? CHARACTER_SET.indexOf(sampleChar) : -1;
-  let resultIndex = -1;
-  let resultChar = '';
-  let operationText = 'Operasi Modulo';
+  const hurufContoh = mode === 'enkripsi' ? pesanAsli[0] : pesanSandi[0];
+  const indeksContoh = hurufContoh ? HIMPUNAN_KARAKTER.indexOf(hurufContoh) : -1;
+  let indeksHasil = -1;
+  let hurufHasil = '';
+  let teksOperasi = 'Operasi Modulo';
 
-  if (sampleIndex !== -1 && sampleChar) {
-    if (mode === 'encrypt') {
-      resultIndex = (sampleIndex + k) % N;
-      resultChar = CHARACTER_SET[resultIndex];
-      operationText = `(${sampleIndex} + ${k}) mod ${N} = ${resultIndex}`;
+  if (indeksContoh !== -1 && hurufContoh) {
+    if (mode === 'enkripsi') {
+      indeksHasil = (indeksContoh + k) % TOTAL_KARAKTER;
+      hurufHasil = HIMPUNAN_KARAKTER[indeksHasil];
+      teksOperasi = `(${indeksContoh} + ${k}) mod ${TOTAL_KARAKTER} = ${indeksHasil}`;
     } else {
-      resultIndex = (sampleIndex - k + N) % N;
-      resultChar = CHARACTER_SET[resultIndex];
-      operationText = `(${sampleIndex} - ${k} + ${N}) mod ${N} = ${resultIndex}`;
+      indeksHasil = (indeksContoh - k + TOTAL_KARAKTER) % TOTAL_KARAKTER;
+      hurufHasil = HIMPUNAN_KARAKTER[indeksHasil];
+      teksOperasi = `(${indeksContoh} - ${k} + ${TOTAL_KARAKTER}) mod ${TOTAL_KARAKTER} = ${indeksHasil}`;
     }
   }
 
   const dynamicNodes: Node[] = [
     { id: '1', position: { x: 250, y: 0 }, data: { label: 'Mulai' }, type: 'input', style: { background: '#dcfce7', borderColor: '#16a34a', color: '#14532d', fontWeight: 600 } },
-    { id: '2', position: { x: 250, y: 80 }, data: { label: `Input Pesan:\n"${mode === 'encrypt' ? plaintext || 'Kosong' : ciphertext || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '2', position: { x: 250, y: 80 }, data: { label: `Input Pesan:\n"${mode === 'enkripsi' ? pesanAsli || 'Kosong' : pesanSandi || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '3', position: { x: 250, y: 160 }, data: { label: `Input Kunci (k):\n${k}` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
-    { id: '4', position: { x: 250, y: 240 }, data: { label: `Ambil Karakter Pertama:\n'${sampleChar || '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
-    { id: '5', position: { x: 250, y: 320 }, data: { label: `Cari Indeks Asli:\n${sampleIndex !== -1 ? sampleIndex : '-'}` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
-    { id: '6', position: { x: 250, y: 400 }, data: { label: `Operasi:\n${sampleIndex !== -1 ? operationText : '-'}` }, style: { backgroundColor: '#dbeafe', borderColor: '#2563eb', color: '#1e3a8a', fontWeight: 600 } },
-    { id: '7', position: { x: 250, y: 480 }, data: { label: `Karakter Hasil:\n'${sampleIndex !== -1 ? resultChar : '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '4', position: { x: 250, y: 240 }, data: { label: `Ambil Karakter Pertama:\n'${hurufContoh || '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '5', position: { x: 250, y: 320 }, data: { label: `Cari Indeks Asli:\n${indeksContoh !== -1 ? indeksContoh : '-'}` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '6', position: { x: 250, y: 400 }, data: { label: `Operasi:\n${indeksContoh !== -1 ? teksOperasi : '-'}` }, style: { backgroundColor: '#dbeafe', borderColor: '#2563eb', color: '#1e3a8a', fontWeight: 600 } },
+    { id: '7', position: { x: 250, y: 480 }, data: { label: `Karakter Hasil:\n'${indeksContoh !== -1 ? hurufHasil : '-'}'` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '8', position: { x: 250, y: 560 }, data: { label: `Ulangi untuk karakter selanjutnya...` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
-    { id: '9', position: { x: 250, y: 640 }, data: { label: `Hasil Akhir:\n"${mode === 'encrypt' ? ciphertext || 'Kosong' : plaintext || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
+    { id: '9', position: { x: 250, y: 640 }, data: { label: `Hasil Akhir:\n"${mode === 'enkripsi' ? pesanSandi || 'Kosong' : pesanAsli || 'Kosong'}"` }, style: { background: '#f8fafc', borderColor: '#94a3b8', color: '#1e293b' } },
     { id: '10', position: { x: 250, y: 720 }, data: { label: 'Selesai' }, type: 'output', style: { background: '#fee2e2', borderColor: '#dc2626', color: '#7f1d1d', fontWeight: 600 } },
   ];
 

@@ -3,25 +3,24 @@ import { Card } from '../UI/Card';
 import { Button } from '../UI/Button';
 import { Table, Thead, Tbody, Tr, Th, Td } from '../UI/Table';
 import { useCipherContext } from '../../context/CipherContext';
-import { generateBruteForce, N } from '../../utils/cryptography';
+import { simulasiBruteForce, TOTAL_KARAKTER } from '../../utils/cryptography';
 import { Cpu, Play, AlertTriangle } from 'lucide-react';
 
-// Mencoba semua k ∈ {1, ..., N-1} untuk mendekripsi ciphertext
-// Mendemonstrasikan bahwa ruang kunci yang kecil = mudah dipecahkan
+// Mencoba semua kunci dari 1 sampai TOTAL_KARAKTER - 1 untuk membongkar sandi
 export const BruteForceModule: React.FC = () => {
-  const { ciphertext } = useCipherContext();
-  const [results, setResults] = useState<{ key: number; text: string }[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
+  const { pesanSandi } = useCipherContext();
+  const [hasilSimulasi, setHasilSimulasi] = useState<{ kunciTebakan: number; hasilTeks: string }[]>([]);
+  const [sedangBerjalan, setSedangBerjalan] = useState(false);
 
-  const handleSimulate = () => {
-    if (!ciphertext) return;
-    setIsRunning(true);
-    setResults([]);
+  const jalankanSimulasi = () => {
+    if (!pesanSandi) return;
+    setSedangBerjalan(true);
+    setHasilSimulasi([]);
 
-    // setTimeout singkat untuk memberi efek "loading" agar terasa ada proses
+    // Memberi sedikit jeda efek loading
     setTimeout(() => {
-      setResults(generateBruteForce(ciphertext)); // O(N × |teks|)
-      setIsRunning(false);
+      setHasilSimulasi(simulasiBruteForce(pesanSandi));
+      setSedangBerjalan(false);
     }, 600);
   };
 
@@ -33,37 +32,37 @@ export const BruteForceModule: React.FC = () => {
           Simulasi Brute Force
         </h2>
         <p className="text-slate-600">
-          Menguji seluruh {N - 1} kemungkinan kunci untuk menemukan plaintext dari ciphertext.
+          Menguji seluruh {TOTAL_KARAKTER - 1} kemungkinan kunci untuk menemukan pesan asli (plaintext) dari pesan sandi (ciphertext).
         </p>
       </div>
 
       <Card>
         <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-800 mb-2">Target Ciphertext</h3>
+            <h3 className="font-semibold text-slate-800 mb-2">Target Pesan Sandi</h3>
             <div className="bg-slate-100 p-3 rounded-lg text-sm font-mono break-all min-h-[60px] flex items-center text-slate-700">
-              {ciphertext || <span className="text-slate-400 italic">Lakukan enkripsi terlebih dahulu.</span>}
+              {pesanSandi || <span className="text-slate-400 italic">Lakukan enkripsi terlebih dahulu.</span>}
             </div>
           </div>
-          <Button onClick={handleSimulate} disabled={!ciphertext || isRunning} leftIcon={<Play className="w-4 h-4" />} isLoading={isRunning}>
-            Run Brute Force
+          <Button onClick={jalankanSimulasi} disabled={!pesanSandi || sedangBerjalan} leftIcon={<Play className="w-4 h-4" />} isLoading={sedangBerjalan}>
+            Jalankan Brute Force
           </Button>
         </div>
 
-        {results.length > 0 && (
+        {hasilSimulasi.length > 0 && (
           <div className="max-h-[500px] overflow-y-auto border rounded-lg border-slate-200">
             <Table>
               <Thead className="sticky top-0 z-10 bg-slate-100">
                 <Tr>
                   <Th className="w-24">Kunci k</Th>
-                  <Th>Hasil Dekripsi D(x) = (x - k + {N}) mod {N}</Th>
+                  <Th>Hasil Dekripsi D(x) = (x - k + {TOTAL_KARAKTER}) mod {TOTAL_KARAKTER}</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {results.map(({ key, text }) => (
-                  <Tr key={key}>
-                    <Td className="font-mono font-bold text-primary-700">k = {key}</Td>
-                    <Td className="font-mono text-sm break-all text-slate-700">{text}</Td>
+                {hasilSimulasi.map(({ kunciTebakan, hasilTeks }) => (
+                  <Tr key={kunciTebakan}>
+                    <Td className="font-mono font-bold text-primary-700">k = {kunciTebakan}</Td>
+                    <Td className="font-mono text-sm break-all text-slate-700">{hasilTeks}</Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -77,8 +76,8 @@ export const BruteForceModule: React.FC = () => {
           <AlertTriangle className="w-5 h-5 text-red-700" /> Analisis Keamanan
         </h3>
         <p className="text-sm text-slate-700 leading-relaxed">
-          Ruang kunci (Key Space) hanya <strong>{N - 1} kemungkinan</strong> (k = 0 dan k = {N} tidak mengubah pesan).
-          Komputer modern dapat mencoba seluruh kemungkinan ini dalam hitungan <strong>milidetik</strong> — O(N).
+          Karena kita hanya memiliki <strong>{TOTAL_KARAKTER - 1} kemungkinan kunci</strong>, keamanan algoritma ini sangat rendah jika kuncinya tidak diketahui.
+          Sistem komputer modern dapat menebak semua kemungkinan tersebut dalam waktu kurang dari satu detik!
         </p>
       </Card>
     </div>

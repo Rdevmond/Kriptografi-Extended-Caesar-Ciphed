@@ -1,32 +1,32 @@
 import React, { useMemo } from 'react';
 import { Card } from '../UI/Card';
 import { useCipherContext } from '../../context/CipherContext';
-import { calculateFrequencies } from '../../utils/cryptography';
+import { hitungFrekuensi } from '../../utils/cryptography';
 import { BarChart2, ShieldAlert } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Legend,
 } from 'recharts';
 
-// Membandingkan distribusi frekuensi karakter plaintext vs ciphertext
+// Membandingkan distribusi frekuensi karakter pesan asli vs sandi
 // Ini membuktikan kelemahan Caesar Cipher terhadap Frequency Analysis Attack
 export const FrequencyAnalysisModule: React.FC = () => {
-  const { plaintext, ciphertext } = useCipherContext();
+  const { pesanAsli, pesanSandi } = useCipherContext();
 
-  // Gabungkan frekuensi plaintext dan ciphertext ke satu data series
+  // Gabungkan frekuensi pesan asli dan pesan sandi ke satu data series
   const data = useMemo(() => {
-    const plainFreqs  = calculateFrequencies(plaintext);
-    const cipherFreqs = calculateFrequencies(ciphertext);
-    const allChars    = new Set([...plainFreqs.map(f => f.char), ...cipherFreqs.map(f => f.char)]);
+    const plainFreqs  = hitungFrekuensi(pesanAsli);
+    const cipherFreqs = hitungFrekuensi(pesanSandi);
+    const allChars    = new Set([...plainFreqs.map(f => f.huruf), ...cipherFreqs.map(f => f.huruf)]);
 
     return Array.from(allChars)
-      .map(char => ({
-        name:       char === ' ' ? 'Space' : char,
-        Plaintext:  plainFreqs.find(f => f.char === char)?.count  ?? 0,
-        Ciphertext: cipherFreqs.find(f => f.char === char)?.count ?? 0,
+      .map(huruf => ({
+        name:       huruf === ' ' ? 'Space' : huruf,
+        PesanAsli:  plainFreqs.find(f => f.huruf === huruf)?.jumlahMuncul  ?? 0,
+        PesanSandi: cipherFreqs.find(f => f.huruf === huruf)?.jumlahMuncul ?? 0,
       }))
-      .sort((a, b) => b.Plaintext - a.Plaintext);
-  }, [plaintext, ciphertext]);
+      .sort((a, b) => b.PesanAsli - a.PesanAsli);
+  }, [pesanAsli, pesanSandi]);
 
   return (
     <div className="space-y-6">
@@ -36,7 +36,7 @@ export const FrequencyAnalysisModule: React.FC = () => {
           Analisis Frekuensi
         </h2>
         <p className="text-slate-600">
-          Frekuensi kemunculan karakter plaintext vs ciphertext — distribusinya identik, hanya bergeser.
+          Frekuensi kemunculan karakter pesan asli vs pesan sandi — distribusinya identik, hanya bergeser.
         </p>
       </div>
 
@@ -55,8 +55,8 @@ export const FrequencyAnalysisModule: React.FC = () => {
               <YAxis tick={{ fill: '#64748b', fontSize: 12 }} />
               <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }} />
               <Legend />
-              <Bar dataKey="Plaintext"  fill="#2563eb" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Ciphertext" fill="#7c3aed" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="PesanAsli"  fill="#2563eb" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="PesanSandi" fill="#7c3aed" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
@@ -67,7 +67,7 @@ export const FrequencyAnalysisModule: React.FC = () => {
           <ShieldAlert className="w-5 h-5 text-amber-700" /> Kerentanan: Frequency Analysis Attack
         </h3>
         <p className="text-sm text-slate-700 leading-relaxed">
-          Grafik membuktikan bahwa distribusi frekuensi ciphertext <strong>identik</strong> dengan plaintext —
+          Grafik membuktikan bahwa distribusi frekuensi pesan sandi <strong>identik</strong> dengan pesan asli —
           hanya karakter-karakternya yang bergeser sejauh k. Penyerang dapat menebak kunci dengan
           mencocokkan pola frekuensi ini tanpa mengetahui kunci sama sekali.
         </p>

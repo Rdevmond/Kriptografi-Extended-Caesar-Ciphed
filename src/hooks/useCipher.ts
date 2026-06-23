@@ -1,60 +1,54 @@
-
 import { useState, useCallback } from 'react';
-import { encrypt, decrypt, type CipherStep, SET_LENGTH } from '../utils/cryptography';
+import { enkripsi, dekripsi, type LangkahSandi, TOTAL_KARAKTER } from '../utils/cryptography';
 
 export const useCipher = () => {
-  const [plaintext, setPlaintext] = useState('');
-  const [ciphertext, setCiphertext] = useState('');
-  const [key, setKey] = useState<number | ''>(5);
-  const [steps, setSteps] = useState<CipherStep[]>([]);
-  const [mode, setMode] = useState<'encrypt' | 'decrypt'>('encrypt');
-  const [securityMethod, setSecurityMethod] = useState<'Extended Caesar Cipher' | 'Substitution' | 'Modular Sederhana'>('Extended Caesar Cipher');
+  const [pesanAsli, setPesanAsli] = useState('');
+  const [pesanSandi, setPesanSandi] = useState('');
+  const [kunci, setKunci] = useState<number | ''>(5);
+  const [jejakLangkah, setJejakLangkah] = useState<LangkahSandi[]>([]);
+  const [mode, setMode] = useState<'enkripsi' | 'dekripsi'>('enkripsi');
+  const [metodePengamanan, setMetodePengamanan] = useState<'Extended Caesar Cipher' | 'Substitution' | 'Modular Sederhana'>('Extended Caesar Cipher');
 
-  const handleEncrypt = useCallback((text: string, k: number) => {
-    const { result, steps } = encrypt(text, k);
-    setCiphertext(result);
-    setSteps(steps);
-    setMode('encrypt');
+  const tanganiEnkripsi = useCallback((teks: string, k: number) => {
+    const { hasilPesan, jejakLangkah } = enkripsi(teks, k);
+    setPesanSandi(hasilPesan);
+    setJejakLangkah(jejakLangkah);
+    setMode('enkripsi');
   }, []);
 
-  const handleDecrypt = useCallback((text: string, k: number) => {
-    const { result, steps } = decrypt(text, k);
-    setPlaintext(result); // Usually we set the decrypted text to plaintext
-    setCiphertext(text);  // and keep ciphertext as is
-    setSteps(steps);
-    setMode('decrypt');
+  const tanganiDekripsi = useCallback((teks: string, k: number) => {
+    const { hasilPesan, jejakLangkah } = dekripsi(teks, k);
+    setPesanAsli(hasilPesan); // Biasanya kita masukkan teks dekripsi ke kolom pesan asli
+    setPesanSandi(teks);      // dan biarkan pesan sandi seperti semula
+    setJejakLangkah(jejakLangkah);
+    setMode('dekripsi');
   }, []);
 
-  const execute = useCallback(() => {
-    if (key === '') return;
-    if (mode === 'encrypt') {
-      handleEncrypt(plaintext, key);
+  const jalankanProses = useCallback(() => {
+    if (kunci === '') return;
+    if (mode === 'enkripsi') {
+      tanganiEnkripsi(pesanAsli, kunci);
     } else {
-      handleDecrypt(ciphertext, key);
+      tanganiDekripsi(pesanSandi, kunci);
     }
-  }, [mode, plaintext, ciphertext, key, handleEncrypt, handleDecrypt]);
+  }, [mode, pesanAsli, pesanSandi, kunci, tanganiEnkripsi, tanganiDekripsi]);
 
-  const validateKey = (k: number) => {
+  const validasiKunci = (k: number) => {
     if (k < 1) return 1;
-    if (k >= SET_LENGTH) return k % SET_LENGTH;
+    if (k >= TOTAL_KARAKTER) return k % TOTAL_KARAKTER;
     return k;
   };
 
   return {
-    plaintext,
-    setPlaintext,
-    ciphertext,
-    setCiphertext,
-    key,
-    setKey,
-    steps,
-    mode,
-    setMode,
-    execute,
-    handleEncrypt,
-    handleDecrypt,
-    validateKey,
-    securityMethod,
-    setSecurityMethod
+    pesanAsli, setPesanAsli,
+    pesanSandi, setPesanSandi,
+    kunci, setKunci,
+    jejakLangkah,
+    mode, setMode,
+    jalankanProses,
+    tanganiEnkripsi,
+    tanganiDekripsi,
+    validasiKunci,
+    metodePengamanan, setMetodePengamanan
   };
 };

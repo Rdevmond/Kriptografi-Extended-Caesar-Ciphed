@@ -6,7 +6,7 @@ import { ListOrdered, AlertCircle } from 'lucide-react';
 
 // Menampilkan langkah-langkah perhitungan E(x)/(D(x)) per karakter
 export const CalculationModule: React.FC = () => {
-  const { steps, mode } = useCipherContext();
+  const { jejakLangkah, mode } = useCipherContext();
 
   return (
     <div className="space-y-6">
@@ -17,12 +17,12 @@ export const CalculationModule: React.FC = () => {
         </h2>
         <p className="text-slate-600">
           Langkah operasi matematika tiap karakter saat proses{' '}
-          {mode === 'encrypt' ? 'enkripsi E(x) = (x + k) mod N' : 'dekripsi D(x) = (x - k + N) mod N'}.
+          {mode === 'enkripsi' ? 'enkripsi E(x) = (x + k) mod N' : 'dekripsi D(x) = (x - k + N) mod N'}.
         </p>
       </div>
 
       <Card>
-        {steps.length === 0 ? (
+        {jejakLangkah.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-slate-500">
             <AlertCircle className="w-12 h-12 mb-4 text-slate-300" />
             <p className="font-medium">Belum ada data.</p>
@@ -34,27 +34,27 @@ export const CalculationModule: React.FC = () => {
               <Thead className="sticky top-0 z-10 bg-slate-100">
                 <Tr>
                   <Th>No</Th>
-                  <Th>Karakter (char)</Th>
-                  <Th>Indeks x</Th>
+                  <Th>Karakter Asli</Th>
+                  <Th>Indeks Asli</Th>
                   {/* Kolom ini menampilkan inti perhitungan modulo */}
-                  <Th>Operasi Matematika</Th>
+                  <Th>Rumus Operasi</Th>
                   <Th>Indeks Hasil</Th>
-                  <Th>Hasil (char)</Th>
+                  <Th>Karakter Hasil</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {steps.map((step, idx) => (
-                  <Tr key={idx} className={step.originalIndex === -1 ? 'bg-red-50' : ''}>
-                    <Td>{idx + 1}</Td>
+                {jejakLangkah.map((langkah, indeks) => (
+                  <Tr key={indeks} className={langkah.indeksAsli === -1 ? 'bg-red-50' : ''}>
+                    <Td>{indeks + 1}</Td>
                     <Td className="font-bold text-slate-800">
-                      {step.originalChar === ' ' ? '(spasi)' : step.originalChar}
+                      {langkah.hurufAsli === ' ' ? '(spasi)' : langkah.hurufAsli}
                     </Td>
-                    <Td>{step.originalIndex !== -1 ? step.originalIndex : '–'}</Td>
+                    <Td>{langkah.indeksAsli !== -1 ? langkah.indeksAsli : '–'}</Td>
                     {/* Menampilkan operasi, misal: "(5 + 3) mod 77 = 8" */}
-                    <Td className="font-mono text-xs text-slate-600">{step.operation}</Td>
-                    <Td>{step.resultIndex !== -1 ? step.resultIndex : '–'}</Td>
+                    <Td className="font-mono text-xs text-slate-600">{langkah.rumusOperasi}</Td>
+                    <Td>{langkah.indeksHasil !== -1 ? langkah.indeksHasil : '–'}</Td>
                     <Td className="font-bold text-primary-700">
-                      {step.resultChar === ' ' ? '(spasi)' : step.resultChar}
+                      {langkah.hurufHasil === ' ' ? '(spasi)' : langkah.hurufHasil}
                     </Td>
                   </Tr>
                 ))}
