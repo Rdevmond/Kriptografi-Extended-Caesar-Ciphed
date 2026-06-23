@@ -1,8 +1,9 @@
 export const HIMPUNAN_KARAKTER =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=? ";
-//                                                                              ^-- spasi ada di sini (indeks 77)
 
 export const TOTAL_KARAKTER = 78;
+
+
 // Tipe data untuk menyimpan jejak atau langkah perhitungan setiap huruf
 export interface LangkahSandi {
   hurufAsli: string;

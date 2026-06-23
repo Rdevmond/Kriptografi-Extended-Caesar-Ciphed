@@ -1,13 +1,13 @@
 import { Hero } from './components/Layout/Hero';
 import { useTheme } from './hooks/useTheme';
 import { CipherProvider } from './context/CipherContext';
-import { EncryptionModule } from './components/Features/EncryptionModule';
-import { CharacterSetModule } from './components/Features/CharacterSetModule';
-import { RelationsModule } from './components/Features/RelationsModule';
-import { CalculationModule } from './components/Features/CalculationModule';
-import { BruteForceModule } from './components/Features/BruteForceModule';
-import { FlowchartModule } from './components/Features/FlowchartModule';
-import { FinalReportModule } from './components/Features/FinalReportModule';
+import { Enkripsi } from './components/PanelTugas/Enkripsi';
+import { Kamus } from './components/PanelTugas/Kamus';
+import { Relasi } from './components/PanelTugas/Relasi';
+import { Kalkulasi } from './components/PanelTugas/Kalkulasi';
+import { Bruteforce } from './components/PanelTugas/Bruteforce';
+import { Flowchart } from './components/PanelTugas/Flowchart';
+import { LaporanAkhir } from './components/PanelTugas/LaporanAkhir';
 import { TOTAL_KARAKTER } from './utils/cryptography';
 import { Lock } from 'lucide-react';
 
@@ -36,49 +36,49 @@ function App() {
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">1. Input & Proses</h2>
               <p className="text-slate-600 mt-2">Masukkan pesan, kunci enkripsi, dan metode untuk memulai.</p>
             </div>
-            <EncryptionModule />
+            <Enkripsi />
           </section>
 
           <section id="himpunan-karakter">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">2. Himpunan Karakter</h2>
             </div>
-            <CharacterSetModule />
+            <Kamus />
           </section>
 
           <section id="tabel-pemetaan">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">3. Tabel Pemetaan Huruf</h2>
             </div>
-            <RelationsModule />
+            <Relasi />
           </section>
 
           <section id="modulo-math">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">4. Detail Perhitungan (Modulo)</h2>
             </div>
-            <CalculationModule />
+            <Kalkulasi />
           </section>
 
           <section id="kemungkinan-kunci">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">5. Kemungkinan Kunci</h2>
             </div>
-            <BruteForceModule />
+            <Bruteforce />
           </section>
 
           <section id="diagram-alur">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">6. Diagram Alur (Flowchart)</h2>
             </div>
-            <FlowchartModule />
+            <Flowchart />
           </section>
 
           <section id="laporan-akhir">
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-slate-800 border-b-2 border-primary-100 pb-2 inline-block">7. Laporan Akhir</h2>
             </div>
-            <FinalReportModule />
+            <LaporanAkhir />
           </section>
 
         </main>

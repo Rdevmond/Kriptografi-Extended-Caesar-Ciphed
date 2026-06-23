@@ -6,7 +6,7 @@ import { useCipherContext } from '../../context/CipherContext';
 import { Copy, RefreshCw, Trash2, ArrowRight } from 'lucide-react';
 import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
-export const EncryptionModule: React.FC = () => {
+export const Enkripsi: React.FC = () => {
   const {
     pesanAsli, setPesanAsli,
     pesanSandi, setPesanSandi,

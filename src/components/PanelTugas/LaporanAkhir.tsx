@@ -4,7 +4,7 @@ import { useCipherContext } from '../../context/CipherContext';
 import { FileText, CheckCircle } from 'lucide-react';
 import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
-export const FinalReportModule: React.FC = () => {
+export const LaporanAkhir: React.FC = () => {
   const { pesanAsli, pesanSandi, kunci, metodePengamanan, validasiKunci } = useCipherContext();
 
   const kunciNormal = typeof kunci === 'number' ? validasiKunci(kunci) : 'Belum diatur';
@@ -33,13 +33,13 @@ export const FinalReportModule: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
               <p className="text-sm font-semibold text-slate-600 mb-1">Pesan Asli:</p>
-              <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words">
+              <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words flex items-center">
                 {pesanAsli || '-'}
               </div>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-600 mb-1">Pesan Sandi:</p>
-              <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words">
+              <div className="p-2 bg-white border border-slate-200 rounded text-slate-800 min-h-[60px] break-words flex items-center">
                 {pesanSandi || '-'}
               </div>
             </div>

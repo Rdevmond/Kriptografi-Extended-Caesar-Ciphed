@@ -7,7 +7,7 @@ import { simulasiBruteForce, TOTAL_KARAKTER } from '../../utils/cryptography';
 import { Cpu, Play, AlertTriangle } from 'lucide-react';
 
 // Mencoba semua kunci dari 1 sampai TOTAL_KARAKTER - 1 untuk membongkar sandi
-export const BruteForceModule: React.FC = () => {
+export const Bruteforce: React.FC = () => {
   const { pesanSandi } = useCipherContext();
   const [hasilSimulasi, setHasilSimulasi] = useState<{ kunciTebakan: number; hasilTeks: string }[]>([]);
   const [sedangBerjalan, setSedangBerjalan] = useState(false);

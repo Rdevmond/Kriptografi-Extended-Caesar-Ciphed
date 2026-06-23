@@ -4,7 +4,7 @@ import { HIMPUNAN_KARAKTER, TOTAL_KARAKTER } from '../../utils/cryptography';
 import { Type, Info } from 'lucide-react';
 
 // Menampilkan himpunan Σ lengkap beserta indeks tiap karakter
-export const CharacterSetModule: React.FC = () => {
+export const Kamus: React.FC = () => {
   const chars = HIMPUNAN_KARAKTER.split('');
 
   const stats = {

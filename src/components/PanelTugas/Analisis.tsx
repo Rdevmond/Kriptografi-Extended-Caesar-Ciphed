@@ -5,7 +5,7 @@ import 'katex/dist/katex.min.css';
 import { BlockMath, InlineMath } from 'react-katex';
 import { TOTAL_KARAKTER } from '../../utils/cryptography';
 
-export const MathAnalysisModule: React.FC = () => {
+export const Analisis: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>

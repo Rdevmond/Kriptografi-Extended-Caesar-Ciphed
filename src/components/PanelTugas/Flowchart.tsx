@@ -14,7 +14,7 @@ import { GitBranch } from 'lucide-react';
 import { useCipherContext } from '../../context/CipherContext';
 import { TOTAL_KARAKTER, HIMPUNAN_KARAKTER } from '../../utils/cryptography';
 
-export const FlowchartModule: React.FC = () => {
+export const Flowchart: React.FC = () => {
   const { pesanAsli, pesanSandi, kunci, mode, validasiKunci } = useCipherContext();
   
   const k = typeof kunci === 'number' ? validasiKunci(kunci) : 0;

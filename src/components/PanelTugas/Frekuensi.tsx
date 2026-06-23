@@ -10,7 +10,7 @@ import {
 
 // Membandingkan distribusi frekuensi karakter pesan asli vs sandi
 // Ini membuktikan kelemahan Caesar Cipher terhadap Frequency Analysis Attack
-export const FrequencyAnalysisModule: React.FC = () => {
+export const Frekuensi: React.FC = () => {
   const { pesanAsli, pesanSandi } = useCipherContext();
 
   // Gabungkan frekuensi pesan asli dan pesan sandi ke satu data series

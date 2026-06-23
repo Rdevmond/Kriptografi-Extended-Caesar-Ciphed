@@ -6,7 +6,7 @@ import { HIMPUNAN_KARAKTER, TOTAL_KARAKTER } from '../../utils/cryptography';
 import { ArrowRightLeft, CheckCircle2 } from 'lucide-react';
 
 // Menampilkan tabel pemetaan Domain → Kodomain untuk kunci yang aktif
-export const RelationsModule: React.FC = () => {
+export const Relasi: React.FC = () => {
   const { kunci, validasiKunci, mode } = useCipherContext();
 
   const k = useMemo(

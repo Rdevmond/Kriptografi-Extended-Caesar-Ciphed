@@ -5,7 +5,7 @@ import { useCipherContext } from '../../context/CipherContext';
 import { ListOrdered, AlertCircle } from 'lucide-react';
 
 // Menampilkan langkah-langkah perhitungan E(x)/(D(x)) per karakter
-export const CalculationModule: React.FC = () => {
+export const Kalkulasi: React.FC = () => {
   const { jejakLangkah, mode } = useCipherContext();
 
   return (
