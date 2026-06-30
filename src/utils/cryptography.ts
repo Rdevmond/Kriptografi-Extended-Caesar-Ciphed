@@ -17,6 +17,16 @@ export const normalisasiKunci = (kunci: number): number => {
   return ((kunci % TOTAL_KARAKTER) + TOTAL_KARAKTER) % TOTAL_KARAKTER;
 };
 
+// Fungsi baru untuk mengubah string Master Password menjadi angka kunci
+export const masterPasswordToKey = (password: string): number => {
+  if (!password) return 0;
+  let totalAscii = 0;
+  for (let i = 0; i < password.length; i++) {
+    totalAscii += (password.charCodeAt(i) * (i + 1));
+  }
+  return normalisasiKunci(totalAscii);
+};
+
 export const enkripsi = (pesan: string, kunci: number): { hasilPesan: string; jejakLangkah: LangkahSandi[] } => {
   const kunciNormal = normalisasiKunci(kunci);
   const jejakLangkah: LangkahSandi[] = [];
