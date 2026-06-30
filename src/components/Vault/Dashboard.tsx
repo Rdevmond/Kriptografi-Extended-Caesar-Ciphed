@@ -30,7 +30,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ masterKey, masterPassword,
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-3">
             <Lock className="w-8 h-8 text-primary-600" />
-            My Secret Vault
+            CriptoGraphCaesarVault
           </h1>
           <div className="flex items-center gap-2 mt-2">
             <p className="text-sm text-slate-500">Sesi Aktif: </p>

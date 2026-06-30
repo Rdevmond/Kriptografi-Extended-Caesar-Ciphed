@@ -33,7 +33,7 @@ function App() {
           <div className="flex items-center gap-3">
             <Lock className="w-6 h-6 text-primary-600" />
             <span className="font-bold text-xl text-primary-900 tracking-tight">
-              Caesar Vault
+              CriptoGraphCaesarVault
             </span>
           </div>
           
