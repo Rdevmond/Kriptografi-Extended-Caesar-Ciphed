@@ -75,7 +75,7 @@ export const Enkripsi: React.FC = () => {
             <select
               className="input-field"
               value={metodePengamanan}
-              onChange={(e) => setMetodePengamanan(e.target.value as any)}
+              onChange={(e) => setMetodePengamanan(e.target.value as 'Extended Caesar Cipher' | 'Substitution' | 'Modular Sederhana')}
             >
               <option value="Extended Caesar Cipher">Extended Caesar Cipher</option>
               <option value="Substitution" disabled>Substitution (Segera Hadir)</option>

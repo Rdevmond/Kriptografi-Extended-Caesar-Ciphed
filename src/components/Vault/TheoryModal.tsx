@@ -270,8 +270,8 @@ export const TheoryModal: React.FC<TheoryModalProps> = ({ isOpen, onClose }) => 
                     <div className="flex w-full justify-center relative mt-4 h-28">
                       {/* Salah */}
                       <div className="absolute right-[calc(50%+128px)] top-0 bg-slate-100 border-2 border-slate-300 p-3 rounded-xl shadow-sm w-48 text-center -translate-x-4">
-                        <span className="font-semibold text-sm text-slate-700">Teks Acak</span>
-                        <p className="text-[10px] text-slate-500 mt-1">Judul tetap acak & tak bisa dibaca. Data aman.</p>
+                        <span className="font-semibold text-sm text-slate-700">Data Disembunyikan</span>
+                        <p className="text-[10px] text-slate-500 mt-1">Fingerprint tidak cocok, catatan tidak akan ditampilkan di Dashboard.</p>
                       </div>
                       
                       {/* Benar */}

@@ -7,7 +7,7 @@ import { clsx } from 'clsx';
 interface AddEntryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (entry: { type: VaultEntryType; title: string; username?: string; encryptedData: string; hasCustomKey?: boolean }) => void;
+  onSave: (entry: { type: VaultEntryType; title: string; username?: string; encryptedData: string; hasCustomKey?: boolean; keyFingerprint: string }) => void;
   masterKey: number;
   initialType?: VaultEntryType;
 }
@@ -21,6 +21,7 @@ export const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, o
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setType(initialType);
       setTitle('');
       setUsername('');
@@ -47,12 +48,17 @@ export const AddEntryModal: React.FC<AddEntryModalProps> = ({ isOpen, onClose, o
     // Encrypt Secret Data with CombinedKey
     const encData = enkripsi(secretData, combinedKey).hasilPesan;
 
+    // Generate key fingerprint to verify master key later
+    const KEY_FINGERPRINT_CONSTANT = 'CGCV_VALID_KEY_2025';
+    const keyFingerprint = enkripsi(KEY_FINGERPRINT_CONSTANT, masterKey).hasilPesan;
+
     onSave({
       type,
       title: encTitle,
       username: encUsername,
       encryptedData: encData,
-      hasCustomKey: !!customPassword
+      hasCustomKey: !!customPassword,
+      keyFingerprint
     });
 
     // Reset form

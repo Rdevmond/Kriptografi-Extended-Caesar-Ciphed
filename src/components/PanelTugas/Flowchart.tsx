@@ -22,17 +22,16 @@ export const Flowchart: React.FC = () => {
   // Ambil karakter pertama sebagai contoh untuk flowchart
   const hurufContoh = mode === 'enkripsi' ? pesanAsli[0] : pesanSandi[0];
   const indeksContoh = hurufContoh ? HIMPUNAN_KARAKTER.indexOf(hurufContoh) : -1;
-  let indeksHasil = -1;
   let hurufHasil = '';
   let teksOperasi = 'Operasi Modulo';
 
   if (indeksContoh !== -1 && hurufContoh) {
     if (mode === 'enkripsi') {
-      indeksHasil = (indeksContoh + k) % TOTAL_KARAKTER;
+      const indeksHasil = (indeksContoh + k) % TOTAL_KARAKTER;
       hurufHasil = HIMPUNAN_KARAKTER[indeksHasil];
       teksOperasi = `(${indeksContoh} + ${k}) mod ${TOTAL_KARAKTER} = ${indeksHasil}`;
     } else {
-      indeksHasil = (indeksContoh - k + TOTAL_KARAKTER) % TOTAL_KARAKTER;
+      const indeksHasil = (indeksContoh - k + TOTAL_KARAKTER) % TOTAL_KARAKTER;
       hurufHasil = HIMPUNAN_KARAKTER[indeksHasil];
       teksOperasi = `(${indeksContoh} - ${k} + ${TOTAL_KARAKTER}) mod ${TOTAL_KARAKTER} = ${indeksHasil}`;
     }

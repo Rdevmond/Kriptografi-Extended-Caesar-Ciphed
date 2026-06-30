@@ -15,6 +15,7 @@ export const CipherProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCipherContext = () => {
   const context = useContext(CipherContext);
   if (!context) {

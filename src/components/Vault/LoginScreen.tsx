@@ -33,7 +33,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onShowTheory 
             <div>
               <p className="font-bold text-sm mb-0.5">Masuk (Buka/Buat Vault)</p>
               <p className="text-slate-600 leading-snug">
-                Ketik password di form kanan. Password pertama akan menjadi <strong>Kunci Utama</strong>. Jika salah ketik, data akan tampil sebagai <strong>teks acak</strong> yang aman.
+                Password pertama akan menjadi <strong>Kunci Utama</strong>. Jika salah ketik saat masuk lagi, catatan akan disembunyikan otomatis dalam bentuk <strong>teks acak</strong> yang aman.
               </p>
             </div>
           </div>

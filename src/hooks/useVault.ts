@@ -9,6 +9,7 @@ export interface VaultEntry {
   username?: string; // Encrypted
   encryptedData: string; // Encrypted
   hasCustomKey?: boolean;
+  keyFingerprint?: string; // Encrypted constant to verify master key
   createdAt: number;
 }
 
@@ -20,6 +21,7 @@ export const useVault = () => {
     const stored = localStorage.getItem('caesar_vault_entries');
     if (stored) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setEntries(JSON.parse(stored));
       } catch (e) {
         console.error("Failed to parse vault entries", e);

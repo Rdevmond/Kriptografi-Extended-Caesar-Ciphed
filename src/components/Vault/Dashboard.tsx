@@ -20,8 +20,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ masterKey, masterPassword,
 
   if (!isLoaded) return <div className="p-8 text-center text-slate-500">Loading vault...</div>;
 
-  const passwords = entries.filter(e => e.type === 'password');
-  const notes = entries.filter(e => e.type === 'note');
+  const KEY_FINGERPRINT_CONSTANT = 'CGCV_VALID_KEY_2025';
+
+  // Filter: only show entries whose fingerprint matches the current master key
+  const validEntries = entries.filter(entry => {
+    if (!entry.keyFingerprint) return true; // backward-compat: show old entries without fingerprint
+    return dekripsi(entry.keyFingerprint, masterKey).hasilPesan === KEY_FINGERPRINT_CONSTANT;
+  });
+
+  const passwords = validEntries.filter(e => e.type === 'password');
+  const notes = validEntries.filter(e => e.type === 'note');
 
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
